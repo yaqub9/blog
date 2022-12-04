@@ -1,0 +1,19 @@
+.login_img {
+    background: url('/images/login_img.jpg');
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+section {
+    position: relative;
+}
+.login-form {
+    position: absolute;
+    width: 600px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
