@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\backend\BackendController;
 use App\Http\Controllers\backend\CategoryController;
+use App\Http\Controllers\backend\TagController;
 use App\Http\Controllers\frontend\FrontendController;
+use App\Http\Controllers\backend\SubCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,8 @@ use App\Http\Controllers\frontend\FrontendController;
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [BackendController::class, 'index'])->name('back.index');
     Route::resource('/category', CategoryController::class);
+    Route::resource('/tag', TagController::class);
+    Route::resource('/sub-category', SubCategoryController::class);
 });
 
 Route::get('/', [FrontendController::class, 'index'])->name('front.index');
