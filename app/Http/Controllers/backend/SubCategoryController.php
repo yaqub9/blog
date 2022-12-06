@@ -41,7 +41,7 @@ class SubCategoryController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:10|max:255',
+            'name' => 'required|min:3|max:255',
             'slug' => 'required|unique:sub_categories|max:255',
             'order_by' => 'required|numeric',
             'status' => 'required | numeric',
@@ -90,7 +90,7 @@ class SubCategoryController extends Controller
     public function update(Request $request, SubCategory $subCategory)
     {
         $this->validate($request, [
-            'name' => 'required|min:10|max:255',
+            'name' => 'required|min:3|max:255',
             'slug' => 'required|max:255|unique:sub_categories,slug,'.$subCategory->id,
             'order_by' => 'required|numeric',
             'status' => 'required | numeric',
@@ -117,5 +117,11 @@ class SubCategoryController extends Controller
         session()->flash('cls', 'error');
         session()->flash('msg', 'Deleted Successfully');
         return redirect()->route('sub-category.index');
+    }
+
+    public function getSubCategoryByCategoryId( int $id)
+    {
+        $sub_categories = SubCategory::select('name', 'id')->where('category_id', $id)->get();
+        return response()->json($sub_categories);
     }
 }
