@@ -23,7 +23,7 @@
                 @endif
             </div>
             <div class="card-body">
-                {!! Form::open(['method'=>'post', 'route'=>'post.store']) !!}
+                {!! Form::open(['method'=>'post', 'route'=>'post.store', 'files'=>true]) !!}
                 @include('backend.modules.post.form')
                 {!! Form::submit('Create', ['type'=>'submit', 'class'=>'btn btn-success mt-3']) !!}
                 {!! Form::close() !!}

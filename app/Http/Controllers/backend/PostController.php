@@ -6,8 +6,11 @@ use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\PostCreateRequest;
 
 class PostController extends Controller
 {
@@ -39,9 +42,29 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        //
+        $post_data = $request->except( ['slug', 'tag_ids', 'post_img'] );
+        $post_data['slug'] = Str::slug($request->input('slug'));
+        $post_data['user_id'] = Auth::user()->id;
+        $post_data['is_approved'] = 1;
+
+        if ($request->hasFile('post_img')){
+            $file = $request->file('post_img');
+            $name = Str::slug($request->input('slug'));
+            $height = 400;
+            $width = 1000;
+            $thumb_height = 150;
+            $thumb_width = 300;
+            $path = '/images/post/original/';
+            $thumb_path = '/images/post/thumbnail/';
+            $post_data['post_img'] = ImageUploadController::ImageUpload($name, $height, $width, $path, $file);
+            ImageUploadController::ImageUpload($name, $thumb_height, $thumb_width, $thumb_path, $file);
+        }
+
+        $post = Post::create($post_data);
+        $post->tag()->attach( $request->input('tag_ids') );
+
     }
 
     /**

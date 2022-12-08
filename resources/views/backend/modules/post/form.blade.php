@@ -24,7 +24,7 @@
 <div class="row mb-3">
     @foreach ($tags as $tag)
     <div class="col-md-3">
-        {!! Form::checkbox('tag_id', $tag->id, false, ) !!} <span>{{ $tag->name }}</span>
+        {!! Form::checkbox('tag_ids[]', $tag->id, false, ) !!} <span>{{ $tag->name }}</span>
     </div>
     @endforeach
 </div>
@@ -34,8 +34,8 @@
     <style>
     .ck.ck-editor__main>.ck-editor__editable {
     min-height: 250px;
-    }    
-    </style>    
+    }
+    </style>
 @endpush
 @push('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
