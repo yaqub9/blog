@@ -1,0 +1,28 @@
+a {
+    text-decoration: none !important;
+    color: black;
+}
+a:hover {
+    color: slateblue;
+}
+table td, table th {
+    text-align: center;
+    vertical-align: middle;
+}
+table p {
+    margin: 0 !important;
+}
+table img {
+    max-width: 200px !important;
+    height: auto;
+    cursor: pointer;
+}
+table .post_image {
+    max-width: 600px !important;
+    height: auto;
+}
+
+hr {
+    margin: 5px 0;
+    background-color: green;
+}

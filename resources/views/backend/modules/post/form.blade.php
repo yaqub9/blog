@@ -24,12 +24,17 @@
 <div class="row mb-3">
     @foreach ($tags as $tag)
     <div class="col-md-3">
-        {!! Form::checkbox('tag_ids[]', $tag->id, false, ) !!} <span>{{ $tag->name }}</span>
+        {!! Form::checkbox('tag_ids[]', $tag->id, Route::currentRouteName() =='post.edit' ? in_array($tag->id, $selected_tags) : false ) !!} <span>{{ $tag->name }}</span>
     </div>
     @endforeach
 </div>
 {!! Form::label('post_img', 'Select Post Image', ['class='=>'form-label mt-5']) !!}
-{!! Form::file('post_img', ['class'=>'form-control ']) !!}
+{!! Form::file('post_img', ['class'=>'form-control']) !!}
+@if (Route::currentRouteName() =='post.edit')
+<div>
+    <img class="img-thumbnail post-img" data-src="{{ url('/images/post/original/'.$post->post_img) }}" src="{{ '/images/post/thumbnail/'.$post->post_img }}" alt="{{ $post->post_img }}">
+</div>
+@endif
 @push('css')
     <style>
     .ck.ck-editor__main>.ck-editor__editable {
@@ -41,23 +46,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.3.2/classic/ckeditor.js"></script>
     <script>
+
+        const get_sub_categories = (category_id) => {
+            let route_name = '{{ Route::currentRouteName() }}';
+
+            let sub_category_element = $('sub_category_id');
+            sub_category_element.empty()
+            let sub_category_select = '';
+            if (route_name != 'post.edit'){
+                sub_category_select = 'selected';
+            }
+            sub_category_element.append(`<option ${sub_category_select}>Select Sub Category</option>`)
+            axios.get(window.location.origin + '/dashboard/get-subcategory/' + category_id).then(res=>{
+                let sub_categories = res.data;
+
+                sub_categories.map((sub_category, index)=> {
+                    let selected = '';
+                    if (route_name == 'post.edit'){
+                        let sub_category_id = '{{ $post->sub_category_id ?? null }}'
+                        if (sub_category_id == sub_category.id){
+                            selected='selected';
+                        }
+                    }
+                    return sub_category_element.append(`<option ${selected} value="${sub_category.id}">${sub_category.name}</option>`);
+                })
+            })
+        }
+
         ClassicEditor
         .create( document.querySelector( '#description' ) )
         .catch( error => {
             console.error( error );
         });
     $('#category_id').on('change', function(){
-        let category_id = $(this).val()
-        let sub_category_element = $('#sub_category_id')
-        sub_category_element.empty()
-        sub_category_element.append('<option selected disabled>Select Sub Category</option>')
-        axios.get(window.location.origin + '/dashboard/get-subcategory/' + category_id).then(res=>{
-            let sub_categories = res.data;
-
-            sub_categories.map((sub_category, index)=>(
-                sub_category_element.append(`<option value="${sub_category.id}">${sub_category.name}</option>`)
-            ))
-        })
+        let category_id = $('#category_id').val();
+        get_sub_categories(category_id)
     })
     // $('#category_id').on('change', function(){
     //     let category_id = $(this).val()
@@ -77,4 +100,9 @@
         $('#slug').val(slug.toLowerCase())
     })
     </script>
+    @if (Route::currentRouteName() == 'post.edit')
+        <script>
+            get_sub_categories( '{{ $post->category_id }}' )
+        </script>
+    @endif
 @endpush

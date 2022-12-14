@@ -9,7 +9,7 @@ use Intervention\Image\Facades\Image;
 class ImageUploadController extends Controller
 {
     static public function ImageUpload($name, $height, $width,  $path, $file){
-        $image_name = $name. '-'. date('d-m-Y').'.webp';
+        $image_name = $name.'.webp';
         Image::make($file)
         ->fit( $width, $height )
         ->save(public_path($path).$image_name, '50', 'webp');

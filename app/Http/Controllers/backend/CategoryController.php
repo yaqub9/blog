@@ -16,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('order_by')->get();
+        $categories = Category::orderBy('name', 'DESC')->get();
         return view('backend.modules.category.index', compact('categories'));
     }
 
@@ -38,13 +38,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'name' => 'required|min:3|max:255',
             'slug' => 'required|unique:categories|max:255',
             'order_by' => 'required|numeric',
             'status' => 'required | numeric',
         ]);
-        
+
+
+
         $category_data = $request->all();
         $category_data ['slug'] = Str::slug($request->input('slug'));
         Category::create($category_data);

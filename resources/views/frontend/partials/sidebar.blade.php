@@ -15,18 +15,12 @@
             </div>
             <div class="content">
               <ul>
-                <li><a href="post-details.html">
-                  <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                  <span>May 31, 2020</span>
+                @foreach ($recentPost as $post)
+                <li><a href="{{ route('front.single', $post->slug) }}">
+                  <h5>{{ $post->title }}</h5>
+                  <span>{{ $post->created_at->format('M d, Y') }}</span>
                 </a></li>
-                <li><a href="post-details.html">
-                  <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                  <span>May 28, 2020</span>
-                </a></li>
-                <li><a href="post-details.html">
-                  <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                  <span>May 14, 2020</span>
-                </a></li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -38,12 +32,9 @@
             </div>
             <div class="content">
               <ul>
-                <li><a href="#">- Nature Lifestyle</a></li>
-                <li><a href="#">- Awesome Layouts</a></li>
-                <li><a href="#">- Creative Ideas</a></li>
-                <li><a href="#">- Responsive Templates</a></li>
-                <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                <li><a href="#">- Creative &amp; Unique</a></li>
+                @foreach ($categories as $category)
+                <li><a href="{{ route('front.category', $category->slug) }}">- {{ $category->name }}</a></li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -55,13 +46,9 @@
             </div>
             <div class="content">
               <ul>
-                <li><a href="#">Lifestyle</a></li>
-                <li><a href="#">Creative</a></li>
-                <li><a href="#">HTML5</a></li>
-                <li><a href="#">Inspiration</a></li>
-                <li><a href="#">Motivation</a></li>
-                <li><a href="#">PSD</a></li>
-                <li><a href="#">Responsive</a></li>
+                @foreach ($tags as $tag)
+                <li><a href="{{ route('front.tag' , $tag->slug) }}">{{ $tag->name }}</a></li>
+                @endforeach
               </ul>
             </div>
           </div>

@@ -44,7 +44,11 @@ Route::prefix('dashboard')->group(function () {
 });
 
 Route::get('/', [FrontendController::class, 'index'])->name('front.index');
-Route::get('/single-post', [FrontendController::class, 'single'])->name('front.single');
+Route::get('/single-post/{slug}', [FrontendController::class, 'single'])->name('front.single');
+Route::get('/category/{slug}', [CategoryController::class, 'index'])->name('front.category');
+Route::get('/tag/{slug}', [TagController::class, 'index'])->name('front.tag');
 
 
 require __DIR__.'/auth.php';
+
+
